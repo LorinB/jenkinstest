@@ -31,13 +31,7 @@ pipeline {
         }
       
     
-    stage('Deploy App') {
-      steps {
-        script {
-          kubernetesDeploy(configs: "billing-postgresql.yaml", kubeconfigId: "mykubeconfig")
-        }
-      }
-    }
+    
 
   }
 
