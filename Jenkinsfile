@@ -14,7 +14,7 @@ pipeline {
     stage("Build image") {
             steps {
                 script {
-                    myapp = docker.build("postgres/postgres:13.0-alpine")
+                    myapp = docker.build("postgres/postgres:${env.BUILD_ID}")
                 }
             }
         }
