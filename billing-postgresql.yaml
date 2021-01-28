@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: billing-postgresql-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 15Gi
+  storageClassName: do-block-storage
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: billing-postgresql
+  labels:
+    app: billing-postgresql
+spec:
+  selector:
+    matchLabels:
+      app: billing-postgresql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: billing-postgresql
+    spec:
+      containers:
+      - name: billing-postgresql
+        image: postgres:13.0-alpine
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: POSTGRES_DB
+          value: postgres
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: "/var/lib/postgresql/data/"
+          name: data-volume
+          subPath: pg-data
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: billing-postgresql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: billing-postgresql
+  labels:
+    app: billing-postgresql
+spec:
+  ports:
+  - name: billing-postgresql
+    port: 5432
+    targetPort: 5432
+  selector:
+    app: billing-postgresql
