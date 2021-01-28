@@ -27,17 +27,3 @@ spec:
           value: postgres
         ports:
         - containerPort: 5432
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: billing-postgresql
-  labels:
-    app: billing-postgresql
-spec:
-  ports:
-  - name: billing-postgresql
-    port: 5432
-    targetPort: 5432
-  selector:
-    app: billing-postgresql
