@@ -14,7 +14,7 @@ pipeline {
     stage("Build image") {
             steps {
                 script {
-                    myapp = docker.build("LorinB/jenkinstest:${env.BUILD_ID}")
+                    myapp = docker.build("postgres/postgres:13.0-alpine")
                 }
             }
         }
