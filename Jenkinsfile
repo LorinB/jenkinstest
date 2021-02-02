@@ -7,17 +7,36 @@ pipeline {
 
     stage('Checkout Source') {
       steps {
-        git url:'https://github.com/vamsijakkula/hellowhale.git', branch:'master'
+        git url:'https://github.com/LorinB/jenkinstest.git', branch:'main'
       }
     }
     
-      stage("Build image") {
-            steps {
-                script {
-                    myapp = docker.build("vamsijakkula/hellowhale:${env.BUILD_ID}")
-                }
-            }
-        }
+      stage('Build') {
+  agent {
+    kubernetes {
+      label 'jenkinsrun'
+      defaultContainer 'builder'
+      yaml """
+kind: Pod
+metadata:
+  name: kaniko
+spec:
+  containers:
+  - name: builder
+    image: gcr.io/kaniko-project/executor:debug
+    imagePullPolicy: Always
+    command:
+    - /busybox/cat
+    tty: true
+"""
+    }
+  }
+steps {
+      script {
+        sh "/kaniko/executor --dockerfile jenkinstest/Dockerfile --destination=myapp:${env.BUILD_ID}"
+    } //container
+  } //steps
+} //stage(build)
     
       stage("Push image") {
             steps {
@@ -34,7 +53,7 @@ pipeline {
     stage('Deploy App') {
       steps {
         script {
-          kubernetesDeploy(configs: "hellowhale.yml", kubeconfigId: "mykubeconfig")
+          kubernetesDeploy(configs: "billing-postgresql.yaml", kubeconfigId: "mykubeconfig")
         }
       }
     }
