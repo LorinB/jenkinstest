@@ -23,9 +23,18 @@ spec:
     command:
     - cat
     tty: true
+  - name: docker
+    image: docker:latest
+    command:
+    - cat
+    tty: true
     volumeMounts:
-        - mountPath: "/var/run/docker.sock:/var/run/docker.sock"
-          name: docker-socket
+    - mountPath: /var/run/docker.sock
+      name: docker-sock
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
 """
     }
   }
@@ -41,12 +50,14 @@ steps {
     
       stage("Push image") {
             steps {
+              container ('builder') {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                             myapp.push("latest")
                             myapp.push("${env.BUILD_ID}")
                     }
                 }
+              }
             }
         }
 
