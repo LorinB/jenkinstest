@@ -1,16 +1,11 @@
 
 pipeline {
 
-  agent any
+  agent none
 
   stages {
 
-    stage('Checkout Source') {
-      steps {
-        git url:'https://github.com/LorinB/jenkinstest.git', branch:'main'
-      }
-    }
-    
+        
       stage('Build') {
   agent {
     kubernetes {
@@ -32,6 +27,9 @@ spec:
     }
   }
 steps {
+      
+      git url:'https://github.com/LorinB/jenkinstest.git', branch:'main'
+      
       script {
         sh "docker build /home/jenkins/agent/workspace/billing-test/LorinB/jenkinstest/"
     } //container
