@@ -19,11 +19,11 @@ pipeline {
       yaml """
 kind: Pod
 metadata:
-  name: kaniko
+  name: docker-build
 spec:
   containers:
   - name: builder
-    image: gcr.io/kaniko-project/executor:debug
+    image: jenkins/jnlp-agent-docker:latest
     imagePullPolicy: Always
     command:
     - /busybox/cat
@@ -33,7 +33,7 @@ spec:
   }
 steps {
       script {
-        sh "/kaniko/executor --dockerfile Dockerfile --destination=myapp:${env.BUILD_ID}"
+        sh "docker build --dockerfile Dockerfile --destination=myapp:${env.BUILD_ID}"
     } //container
   } //steps
 } //stage(build)
