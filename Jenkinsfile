@@ -33,7 +33,7 @@ spec:
   }
 steps {
       script {
-        sh "/kaniko/executor --dockerfile jenkinstest/Dockerfile --destination=myapp:${env.BUILD_ID}"
+        sh "/kaniko/executor --dockerfile Dockerfile --destination=myapp:${env.BUILD_ID}"
     } //container
   } //steps
 } //stage(build)
