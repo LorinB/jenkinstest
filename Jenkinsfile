@@ -33,7 +33,7 @@ spec:
   }
 steps {
       script {
-        sh "ls -l | docker build /home/jenkins/agent/workspace/billing-test/Dockerfile"
+        sh "docker build /home/jenkins/agent/workspace/billing-test/LorinB/jenkinstest/"
     } //container
   } //steps
 } //stage(build)
