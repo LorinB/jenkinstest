@@ -33,9 +33,9 @@ spec:
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
-volumes:
-  - name: dind-storage
-    emptyDir: {}
+  volumes:
+    - name: dind-storage
+      emptyDir: {}
 """
     }
   }
