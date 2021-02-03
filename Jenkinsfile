@@ -26,7 +26,7 @@ spec:
     image: jenkins/jnlp-agent-docker:latest
     imagePullPolicy: Always
     command:
-    - /busybox/cat
+    - cat
     tty: true
 """
     }
