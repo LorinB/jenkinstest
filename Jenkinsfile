@@ -31,7 +31,7 @@ steps {
       git url:'https://github.com/LorinB/jenkinstest.git', branch:'main'
       
       script {
-        sh "ls"
+        sh "docker build ./"
     } //container
   } //steps
 } //stage(build)
