@@ -33,7 +33,7 @@ spec:
   }
 steps {
       script {
-        sh "docker build -t myapp:$BUILD_NUMBER"
+        sh "docker build ./Dockerfile"
     } //container
   } //steps
 } //stage(build)
